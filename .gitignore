@@ -29,9 +29,9 @@ env.bak/
 venv.bak/
 .venv/
 
-# Signature database
-signature_database/
-*.json
+# Signature database (keeping for sharing)
+# signature_database/
+# *.json
 
 # Temporary files
 *.tmp
