@@ -19,7 +19,7 @@ class RequirementsCreator:
         self.version_matcher = VersionMatcher(db_path)
         self.code_analyzer = CodeAnalyzer()
     
-    def add_library_to_database(self, library_name: str, max_versions: int = 20) -> Dict[str, Any]:
+    def add_library_to_database(self, library_name: str, max_versions: int = 10) -> Dict[str, Any]:
         """Add a library to the signature database (fully automated)"""
         print(f"🔍 Starting automatic analysis of {library_name}")
         

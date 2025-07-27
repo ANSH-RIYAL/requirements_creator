@@ -47,7 +47,7 @@ Examples:
     # Add library command
     add_parser = subparsers.add_parser('add', help='Add a library to the signature database')
     add_parser.add_argument('library', help='Library name to add')
-    add_parser.add_argument('-v', '--versions', type=int, default=20, help='Number of versions to analyze (default: 20)')
+    add_parser.add_argument('-v', '--versions', type=int, default=10, help='Number of versions to analyze (default: 10)')
     
     # Batch add command
     batch_parser = subparsers.add_parser('batch-add', help='Add multiple libraries to the database')
