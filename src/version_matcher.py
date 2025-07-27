@@ -43,8 +43,8 @@ class VersionMatcher:
         
         compatible_versions = []
         
-        for version_str, signatures in versions.items():
-            if self.version_supports_calls(version_str, signatures, function_calls):
+        for version_str, version_signatures in versions.items():
+            if self.version_supports_calls(version_str, version_signatures, function_calls):
                 compatible_versions.append(version_str)
         
         return compatible_versions

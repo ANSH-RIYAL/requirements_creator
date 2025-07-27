@@ -67,7 +67,7 @@ class RequirementsCreator:
         
         return all_signatures
     
-    def analyze_codebase(self, code_path: str, output_path: str = "requirements.txt") -> Dict[str, str]:
+    def analyze_codebase(self, code_path: str, output_path: str = "requirements.txt", auto_add_missing: bool = False) -> Dict[str, str]:
         """Analyze codebase and generate requirements.txt"""
         print(f"📁 Analyzing codebase at: {code_path}")
         
@@ -88,11 +88,33 @@ class RequirementsCreator:
             if not self.db_manager.library_exists(library_name):
                 missing_libraries.append(library_name)
         
-        # Auto-add missing libraries
+        # Handle missing libraries
         if missing_libraries:
-            print(f"🔧 Adding {len(missing_libraries)} libraries to database...")
+            print(f"\n⚠️  Found {len(missing_libraries)} libraries not in signature database:")
             for library in missing_libraries:
-                self.add_library_to_database(library)
+                print(f"  📦 {library}")
+            
+            if auto_add_missing:
+                print(f"\n🔧 Auto-adding {len(missing_libraries)} libraries to database...")
+                for library in missing_libraries:
+                    self.add_library_to_database(library)
+            else:
+                print(f"\n❓ Would you like to add these libraries to the signature database?")
+                print("   This will allow for accurate version matching.")
+                print("   Libraries to add:", ", ".join(missing_libraries))
+                
+                while True:
+                    response = input("   Add libraries? (y/n): ").lower().strip()
+                    if response in ['y', 'yes']:
+                        print(f"\n🔧 Adding {len(missing_libraries)} libraries to database...")
+                        for library in missing_libraries:
+                            self.add_library_to_database(library)
+                        break
+                    elif response in ['n', 'no']:
+                        print("⚠️  Skipping missing libraries. Version matching may be incomplete.")
+                        break
+                    else:
+                        print("   Please enter 'y' or 'n'")
         
         # Match function calls to versions
         requirements = self.version_matcher.match_codebase_requirements(function_calls)

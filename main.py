@@ -42,6 +42,7 @@ Examples:
     analyze_parser = subparsers.add_parser('analyze', help='Analyze codebase and generate requirements.txt')
     analyze_parser.add_argument('code_path', help='Path to the codebase to analyze')
     analyze_parser.add_argument('-o', '--output', default='requirements.txt', help='Output file path (default: requirements.txt)')
+    analyze_parser.add_argument('--auto-add', action='store_true', help='Automatically add missing libraries to database without asking')
     
     # Add library command
     add_parser = subparsers.add_parser('add', help='Add a library to the signature database')
@@ -82,7 +83,7 @@ Examples:
                 sys.exit(1)
             
             print(f"🔍 Analyzing codebase: {args.code_path}")
-            requirements = creator.analyze_codebase(args.code_path, args.output)
+            requirements = creator.analyze_codebase(args.code_path, args.output, args.auto_add)
             
             if requirements:
                 print(f"\n📋 Generated requirements:")
