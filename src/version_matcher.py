@@ -73,8 +73,11 @@ class VersionMatcher:
         # Check if all called arguments exist in this version
         available_args = set(func_sig.get("parameters", []))
         
+        # Check if function accepts **kwargs (any keyword arguments)
+        accepts_kwargs = "kwargs" in available_args
+        
         for arg in called_args:
-            if arg not in available_args:
+            if arg not in available_args and not accepts_kwargs:
                 return False
         
         return True

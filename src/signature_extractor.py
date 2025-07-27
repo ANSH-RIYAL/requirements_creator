@@ -127,6 +127,9 @@ class SignatureExtractor:
                             class_methods = self.extract_class_methods(obj)
                             if class_methods:
                                 signatures[name] = class_methods
+                        elif self.is_ufunc(obj):
+                            # Handle ufuncs (numpy universal functions)
+                            signatures[name] = self.format_ufunc_signature(obj)
                     except (ValueError, TypeError, AttributeError) as e:
                         # Skip functions with problematic signatures
                         continue
@@ -205,4 +208,38 @@ class SignatureExtractor:
             "required_params": required_params,
             "optional_params": optional_params,
             "defaults": defaults
-        } 
+        }
+    
+    def is_ufunc(self, obj) -> bool:
+        """Check if object is a ufunc (numpy universal function)"""
+        try:
+            # Check if it's a numpy ufunc
+            return hasattr(obj, '__class__') and 'ufunc' in str(obj.__class__)
+        except:
+            return False
+    
+    def format_ufunc_signature(self, ufunc) -> Dict[str, Any]:
+        """Format ufunc signature into a structured format"""
+        try:
+            # Ufuncs have a __call__ method that we can inspect
+            if hasattr(ufunc, '__call__'):
+                sig = inspect.signature(ufunc.__call__)
+                return self.format_signature(sig)
+            else:
+                # Fallback for ufuncs without callable signature
+                return {
+                    "signature": "ufunc(*args, **kwargs)",
+                    "parameters": ["args", "kwargs"],
+                    "required_params": ["args"],
+                    "optional_params": ["kwargs"],
+                    "defaults": {}
+                }
+        except:
+            # Fallback for any ufunc
+            return {
+                "signature": "ufunc(*args, **kwargs)",
+                "parameters": ["args", "kwargs"],
+                "required_params": ["args"],
+                "optional_params": ["kwargs"],
+                "defaults": {}
+            } 
