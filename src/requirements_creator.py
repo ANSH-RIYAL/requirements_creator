@@ -176,4 +176,49 @@ class RequirementsCreator:
         successful = sum(results.values())
         print(f"✅ Batch complete: {successful}/{len(libraries)} libraries added successfully")
         
-        return results 
+        return results
+    
+    def analyze_code_string(self, code_string: str, auto_add_missing: bool = False) -> Dict[str, str]:
+        """Analyze code from a string and generate requirements"""
+        print(f"📝 Analyzing code string...")
+        
+        # Extract function calls from code string
+        function_calls = self.code_analyzer.analyze_code_string(code_string)
+        
+        if not function_calls:
+            print("❌ No function calls found in code")
+            return {}
+        
+        print(f"📊 Found function calls for {len(function_calls)} libraries:")
+        for library, calls in function_calls.items():
+            print(f"  📦 {library}: {len(calls)} functions")
+        
+        # Check which libraries need to be added to database
+        missing_libraries = []
+        for library_name in function_calls.keys():
+            if not self.db_manager.library_exists(library_name):
+                missing_libraries.append(library_name)
+        
+        # Handle missing libraries
+        if missing_libraries:
+            print(f"\n⚠️  Found {len(missing_libraries)} libraries not in signature database:")
+            for library in missing_libraries:
+                print(f"  📦 {library}")
+            
+            if auto_add_missing:
+                print(f"\n🔧 Auto-adding {len(missing_libraries)} libraries to database...")
+                for library in missing_libraries:
+                    self.add_library_to_database(library)
+            else:
+                print(f"\n⚠️  Missing libraries: {', '.join(missing_libraries)}")
+                print("   Some version matching may be incomplete.")
+        
+        # Match function calls to versions
+        requirements = self.version_matcher.match_codebase_requirements(function_calls)
+        
+        if requirements:
+            print(f"✅ Found compatible versions for {len(requirements)} libraries")
+        else:
+            print("❌ No compatible versions found for any libraries")
+        
+        return requirements 

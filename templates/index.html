@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Stop guessing library versions</h1>
+                <p class="lead mb-4">Get exact Python dependencies automatically. No more containerization nightmares or "it works on my machine" problems.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('demo') }}" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-play me-2"></i>Try Demo
+                    </a>
+                    <a href="https://github.com/ANSH-RIYAL/requirements_creator" target="_blank" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fab fa-github me-2"></i>View on GitHub
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-4 mt-lg-0">
+                <div class="code-example-card bg-white text-dark p-4 rounded shadow">
+                    <h5 class="text-primary mb-3">Before vs After</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="text-danger">Before</h6>
+                            <pre class="small text-start"><code># Guesswork
+flask
+numpy
+requests
+# Breaks often!</code></pre>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="text-success">After</h6>
+                            <pre class="small text-start"><code># Precision
+flask==3.1.1
+numpy==2.2.6
+requests==2.32.4
+# Works always!</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Problem Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto text-center">
+                <h2 class="mb-4">The Containerization Nightmare Every Developer Knows</h2>
+                <p class="lead text-muted mb-5">Anyone who has ever done containerization knows this pain: No matter how careful you were during development, when it's time to create that final requirements.txt file, it becomes the biggest hassle and most annoying part of the entire process.</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="icon-circle bg-danger text-white mb-3 mx-auto">
+                        <i class="fas fa-container-storage"></i>
+                    </div>
+                    <h5>Docker Deployment Fails</h5>
+                    <p class="text-muted">Your code works perfectly locally, but the Docker build fails because of version conflicts you never saw coming.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="icon-circle bg-warning text-white mb-3 mx-auto">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <h5>Hours Lost to requirements.txt</h5>
+                    <p class="text-muted">The final step that should take 5 minutes ends up consuming hours of debugging and version hunting.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="icon-circle bg-secondary text-white mb-3 mx-auto">
+                        <i class="fas fa-dice"></i>
+                    </div>
+                    <h5>Version Guessing Game</h5>
+                    <p class="text-muted">You end up guessing versions, hoping they work together, and praying your container will build successfully.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Solution Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">Simple Solution: Algorithmic Precision</h2>
+                <p class="lead mb-4">Dependency Web analyzes your actual code and finds the exact library versions that work with your specific function calls. No guessing, no breaking.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Scans your code to see exactly how you use each library</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Matches your usage against tested library versions</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Gives you exact versions that work together</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Your containers build successfully every time</li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-white p-4 rounded shadow">
+                    <h5 class="text-primary mb-3">Static Example</h5>
+                    <pre><code class="text-dark"># Your Flask app with numpy and requests
+from flask import Flask
+import numpy as np
+import requests
+
+app = Flask(__name__)
+
+@app.route('/process')
+def process_data():
+    # Using specific numpy function
+    data = np.array([1, 2, 3])
+    result = np.mean(data)
+    
+    # Using requests with timeout
+    response = requests.get('api.example.com', timeout=30)
+    return {'result': result, 'data': response.json()}
+
+# Dependency Web finds: flask==3.1.1, numpy==2.2.6, requests==2.32.4</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>How It Works</h2>
+            <p class="lead text-muted">Simple process, reliable results</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-number bg-primary text-white mb-3 mx-auto">1</div>
+                    <h5>Read Your Code</h5>
+                    <p class="text-muted">Scans your Python files to see exactly which libraries you use and how you use them.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-number bg-primary text-white mb-3 mx-auto">2</div>
+                    <h5>Check Compatibility</h5>
+                    <p class="text-muted">Matches your usage patterns against our database of tested library versions.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-number bg-primary text-white mb-3 mx-auto">3</div>
+                    <h5>Find Working Versions</h5>
+                    <p class="text-muted">Identifies the exact versions that support your specific function calls and work together.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="step-number bg-primary text-white mb-3 mx-auto">4</div>
+                    <h5>Generate requirements.txt</h5>
+                    <p class="text-muted">Creates a precise requirements file that works in your containers every time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Key Features</h2>
+            <p class="lead text-muted">Enterprise-ready dependency management</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card bg-white p-4 rounded shadow h-100">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                    <h5>Algorithmic Precision</h5>
+                    <p class="text-muted mb-0">No LLM guessing - uses deterministic signature matching for 100% accuracy.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card bg-white p-4 rounded shadow h-100">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-database fa-2x"></i>
+                    </div>
+                    <h5>Comprehensive Database</h5>
+                    <p class="text-muted mb-0">Supports 50+ popular libraries with 1000+ versions and function signatures.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card bg-white p-4 rounded shadow h-100">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-cogs fa-2x"></i>
+                    </div>
+                    <h5>CI/CD Integration</h5>
+                    <p class="text-muted mb-0">Seamlessly integrates with deployment pipelines and automation workflows.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Target Audience -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Who Benefits</h2>
+            <p class="lead text-muted">Perfect for teams that value reliability</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="icon-circle bg-primary text-white mb-3 mx-auto">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5>Data Scientists</h5>
+                    <p class="text-muted">Need reproducible environments for research and model deployment.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="icon-circle bg-primary text-white mb-3 mx-auto">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5>Development Teams</h5>
+                    <p class="text-muted">Tired of dependency conflicts slowing down development cycles.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="icon-circle bg-primary text-white mb-3 mx-auto">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h5>DevOps Engineers</h5>
+                    <p class="text-muted">Managing deployment pipelines and container environments.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="icon-circle bg-primary text-white mb-3 mx-auto">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h5>Organizations</h5>
+                    <p class="text-muted">Requiring reliable Python deployments at scale.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>What Developers Say</h2>
+            <p class="lead text-muted">Trusted by teams who value reliable deployments</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card bg-white p-4 rounded shadow h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="text-muted mb-3">"[Testimonial content will be added here based on user feedback and implementation results. This space is reserved for authentic user experiences.]"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="testimonial-avatar bg-primary text-white rounded-circle me-3">DS</div>
+                        <div>
+                            <h6 class="mb-0">Data Science Team Lead</h6>
+                            <small class="text-muted">Enterprise User</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card bg-white p-4 rounded shadow h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="text-muted mb-3">"[This section will showcase real feedback from developers who have used Dependency Web in their containerization workflows.]"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="testimonial-avatar bg-primary text-white rounded-circle me-3">DE</div>
+                        <div>
+                            <h6 class="mb-0">DevOps Engineer</h6>
+                            <small class="text-muted">Development Team</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card bg-white p-4 rounded shadow h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="text-muted mb-3">"[User testimonials will be collected and displayed here to demonstrate the real-world impact of automated dependency resolution.]"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="testimonial-avatar bg-primary text-white rounded-circle me-3">PM</div>
+                        <div>
+                            <h6 class="mb-0">Product Manager</h6>
+                            <small class="text-muted">Tech Organization</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Stop guessing. Start building.</h2>
+        <p class="lead mb-4">Generate your requirements.txt in seconds with algorithmic precision.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ url_for('demo') }}" class="btn btn-light btn-lg px-5">
+                <i class="fas fa-play me-2"></i>Try Demo Now
+            </a>
+            <a href="mailto:ansh.riyal@nyu.edu" class="btn btn-outline-light btn-lg px-5">
+                <i class="fas fa-envelope me-2"></i>Get Enterprise Implementation
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %} 

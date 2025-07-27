@@ -163,7 +163,8 @@ class CodeAnalyzer:
             "pyarrow": ["pyarrow"],
             "urllib3": ["urllib3"],
             "httpx": ["httpx"],
-            "websockets": ["websockets"]
+            "websockets": ["websockets"],
+            "sqlite3": ["sqlite3"]
         }
     
     def analyze_codebase(self, code_path: str) -> Dict[str, Dict[str, Any]]:
@@ -248,4 +249,54 @@ class CodeAnalyzer:
                 if module_name.startswith(pattern + '.'):
                     return library
         
-        return None 
+        return None
+    
+    def analyze_code_string(self, code_string: str) -> Dict[str, Dict[str, Any]]:
+        """Analyze code from a string and extract function calls by library"""
+        function_calls_by_library = defaultdict(lambda: defaultdict(lambda: {"arguments": set(), "calls": []}))
+        
+        try:
+            tree = ast.parse(code_string)
+            
+            # Extract imports
+            import_visitor = ImportVisitor()
+            import_visitor.visit(tree)
+            
+            # Extract function calls
+            call_visitor = FunctionCallVisitor(import_visitor.imports, import_visitor.from_imports)
+            call_visitor.visit(tree)
+            
+            # Process function calls
+            for call in call_visitor.calls:
+                library_name = self.resolve_library_name(call.module_name)
+                if library_name:
+                    function_calls_by_library[library_name][call.function_name]["arguments"].update(call.arguments)
+                    function_calls_by_library[library_name][call.function_name]["calls"].append(call)
+            
+            # Also include imported libraries that don't have function calls
+            # This ensures they get added to the database for version matching
+            for alias, full_name in import_visitor.imports.items():
+                library_name = self.resolve_library_name(full_name)
+                if library_name and library_name not in function_calls_by_library:
+                    function_calls_by_library[library_name] = {}
+            
+            for alias, (module, name) in import_visitor.from_imports.items():
+                library_name = self.resolve_library_name(module)
+                if library_name and library_name not in function_calls_by_library:
+                    function_calls_by_library[library_name] = {}
+            
+            # Convert sets to lists for JSON serialization
+            result = {}
+            for library, functions in function_calls_by_library.items():
+                result[library] = {}
+                for func_name, func_data in functions.items():
+                    result[library][func_name] = {
+                        "arguments": list(func_data["arguments"]),
+                        "calls": len(func_data["calls"])
+                    }
+            
+            return result
+            
+        except Exception as e:
+            print(f"⚠️  Error parsing code string: {e}")
+            return {} 
